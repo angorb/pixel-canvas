@@ -1,0 +1,19 @@
+{
+    "name": "angorb/pixelcanvas",
+    "description": "RGB LED matrix tools. For pixel art and stuff.",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Angorb\\Pixelcanvas\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "nick brogna",
+            "email": "hello@nickbrogna.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/psr7": "^2.1"
+    }
+}

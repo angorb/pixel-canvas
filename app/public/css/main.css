@@ -1,0 +1,42 @@
+body {
+    background-color: darkgrey;
+}
+
+div#recentColorPicker {
+    border: 1px solid #000;
+}
+
+div.recentColor {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #000;
+    margin-right: 5px;
+}
+
+div.grid {
+    margin: auto;
+    /* pad 2px for borders */
+    width: 642px;
+    height: 642px;
+    border: 1px solid #333;
+    display: grid;
+    grid-template-columns: repeat(64, 10px);
+    grid-template-rows: repeat(64, 10px);
+}
+
+div.cell {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid #333;
+    background-color: black;
+}
+
+form {
+    margin-bottom: 2%;
+}
+
+button {
+    margin-left: 2%;
+}

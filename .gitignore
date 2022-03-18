@@ -1,0 +1,4 @@
+*.env
+NOTES
+app/vendor
+app/public/workshop
