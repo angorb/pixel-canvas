@@ -2,3 +2,7 @@
 NOTES
 app/vendor
 app/public/workshop
+app/node_modules
+app/public/css/bootstrap*
+app/public/scripts/jquery*
+app/public/scripts/bootstrap*

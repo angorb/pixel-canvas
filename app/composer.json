@@ -14,6 +14,17 @@
         }
     ],
     "require": {
-        "guzzlehttp/psr7": "^2.1"
+        "guzzlehttp/psr7": "^2.1",
+        "php-di/php-di": "^6.3",
+        "twbs/bootstrap": "5.0.2",
+        "components/jquery": "^3.6"
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "rm -f public/css/bootstrap.min.css public/css/bootstrap.min.css.map public/scripts/bootstrap.min.js public/scripts/jquery.min.js public/scripts/bootstrap.min.js.map",
+            "cp vendor/twbs/bootstrap/dist/css/bootstrap.min.* public/css/",
+            "cp vendor/twbs/bootstrap/dist/js/bootstrap.min.* public/scripts/",
+            "cp vendor/components/jquery/jquery.min.js public/scripts/"
+        ]
     }
 }

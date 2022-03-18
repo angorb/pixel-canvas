@@ -22,6 +22,7 @@ div.grid {
     display: grid;
     grid-template-columns: repeat(64, 10px);
     grid-template-rows: repeat(64, 10px);
+    background-color: black;
 }
 
 div.cell {
@@ -30,7 +31,6 @@ div.cell {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     border: 1px solid #333;
-    background-color: black;
 }
 
 form {
