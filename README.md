@@ -7,7 +7,7 @@ Not a lot here yet; a super preliminary insomnia timekiller personal no-expectat
 🧙
 
 ### Uses
-[jQuery](https://api.jquery.com/)
-[Bootstrap 5](https://getbootstrap.com/docs/5.1/getting-started/introduction/)
-[league/route](https://route.thephpleague.com/)
-[laminas/laminas-diactoros](https://docs.laminas.dev/laminas-diactoros/)
+- [jQuery](https://api.jquery.com/)
+- [Bootstrap 5](https://getbootstrap.com/docs/5.1/getting-started/introduction/)
+- [league/route](https://route.thephpleague.com/)
+- [laminas/laminas-diactoros](https://docs.laminas.dev/laminas-diactoros/)
