@@ -42,7 +42,7 @@ $router->group('/api', function ($router) {
             'success' => true
         ];
     });
-
+    $router->map('POST', '/save', 'Angorb\PixelCanvas\Api::save');
     $router->map('GET', '/test2', 'Angorb\PixelCanvas\Api::test');
 })->setStrategy(new League\Route\Strategy\JsonStrategy($responseFactory));
 

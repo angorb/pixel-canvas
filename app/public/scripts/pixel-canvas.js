@@ -1,5 +1,3 @@
-const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
-
 $("#colorpicker").spectrum({
     color: "#fff",
     showPalette: true,
@@ -38,7 +36,7 @@ $().ready(function () {
             name: $('input#export-name').val(),
             cells: cellColors
         };
-        $.post('/api', data, function (response) {
+        $.post('/api/save', data, function (response) {
             console.log(response);
         });
     });

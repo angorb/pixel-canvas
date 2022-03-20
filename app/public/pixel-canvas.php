@@ -50,6 +50,7 @@ require_once __DIR__ . '/../config/bootstrap.php';
 
     <!-- JavaScript -->
     <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/hexcolor.js"></script>
     <script src="/scripts/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
     <script src="/scripts/pixel-canvas.js"></script>
