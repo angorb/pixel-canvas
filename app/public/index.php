@@ -1,6 +1,8 @@
 <?php
-session_name('pixel-canvas');
-session_start();
+
+use Angorb\PixelCanvas\Console;
+
+require_once __DIR__ . '/../config/bootstrap.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -36,6 +38,7 @@ session_start();
                 <?php endfor; ?>
             </div>
         </div>
+        <?php if (DEBUG) include __DIR__ . '/../templates/debug-controls.php'; ?>
     </div>
 
     <!-- JavaScript -->
@@ -43,6 +46,7 @@ session_start();
     <script src="/scripts/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
     <script src="/scripts/pixel-canvas.js"></script>
+    <?php Console::log('Butts.'); ?>
 </body>
 
 </html>

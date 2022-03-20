@@ -4,7 +4,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Angorb\\Pixelcanvas\\": "src/"
+            "Angorb\\PixelCanvas\\": "src/"
         }
     },
     "authors": [
@@ -17,7 +17,8 @@
         "guzzlehttp/psr7": "^2.1",
         "php-di/php-di": "^6.3",
         "twbs/bootstrap": "5.0.2",
-        "components/jquery": "^3.6"
+        "components/jquery": "^3.6",
+        "monolog/monolog": "^2.4"
     },
     "scripts": {
         "post-update-cmd": [
@@ -26,5 +27,8 @@
             "cp vendor/twbs/bootstrap/dist/js/bootstrap.min.* public/scripts/",
             "cp vendor/components/jquery/jquery.min.js public/scripts/"
         ]
+    },
+    "require-dev": {
+        "league/climate": "^3.8"
     }
 }

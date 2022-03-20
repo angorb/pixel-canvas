@@ -34,6 +34,9 @@ $().ready(function () {
         $('.cell').each(function () {
             cellColors[$(this).attr('name')] = $(this).css('background-color');
         });
-        console.log(cellColors);
+        var data = { cells: cellColors };
+        $.post('api/', data, function (response) {
+            console.log(response);
+        });
     });
 });
