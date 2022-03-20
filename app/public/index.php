@@ -1,52 +1,57 @@
 <?php
 
-use Angorb\PixelCanvas\Console;
+declare(strict_types=1);
 
-require_once __DIR__ . '/../config/bootstrap.php';
-?>
-<!doctype html>
-<html lang="en">
+include __DIR__ . '/../vendor/autoload.php';
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <!-- Spectrum Color Picker - implement via NPM? - https://bgrins.github.io/spectrum/#modes-custom -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
-    <link rel="stylesheet" href="/css/main.css">
+$logger = new Monolog\Logger('pixel-canvas');
+$logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/app.log'));
 
-    <title>Pixel Canvas</title>
-</head>
+$request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
+    $_SERVER,
+    $_GET,
+    $_POST,
+    $_COOKIE,
+    $_FILES
+);
 
-<body>
-    <div class="container-flex">
-        <h1>Pixel Canvas</h1>
-        <div class="col-sm-4 align-right">
-            <form class="form-inline">
-                <input id='colorpicker' class="form-control">
-                <input id='session-id' type='hidden' value='<?= session_id() ?>'>
-                <button type="button" class="btn btn-info" id="export">Export</button>
-                <button type="button" class="btn btn-danger" id="reset">Reset</button>
-            </form>
-        </div>
-        <!-- Picker Table -->
-        <div class="col-sm-8">
-            <div class="grid">
-                <?php for ($i = 0; $i < 4096; $i++) : ?>
-                    <div id='px<?= $i ?>' name='<?= $i ?>' class='cell'></div>
-                <?php endfor; ?>
-            </div>
-        </div>
-        <?php if (DEBUG) include __DIR__ . '/../templates/debug-controls.php'; ?>
-    </div>
+$router = new League\Route\Router;
+$responseFactory = new Laminas\Diactoros\ResponseFactory();
 
-    <!-- JavaScript -->
-    <script src="/scripts/jquery.min.js"></script>
-    <script src="/scripts/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
-    <script src="/scripts/pixel-canvas.js"></script>
-    <?php Console::log('Butts.'); ?>
-</body>
+// map a route
+$router->map('GET', '/', function (ServerRequestInterface $request): ResponseInterface {
+    // hacky but it works for now
+    $response = new Laminas\Diactoros\Response\RedirectResponse('pixel-canvas.php');
+    return $response;
+});
 
-</html>
+// JSON API
+$router->group('/api', function ($router) {
+
+    $router->map('POST', '/', function (ServerRequestInterface $request): array {
+        return [
+            'body' => $request->getParsedBody()
+        ];
+    });
+
+    $router->map('GET', '/test', function (ServerRequestInterface $request): array {
+        return [
+            'success' => true
+        ];
+    });
+
+    $router->map('GET', '/test2', 'Angorb\PixelCanvas\Api::test');
+})->setStrategy(new League\Route\Strategy\JsonStrategy($responseFactory));
+
+
+try {
+    $response = $router->dispatch($request);
+
+    // send the response to the browser
+    (new Laminas\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);
+} catch (Exception $ex) {
+    $logger->critical($ex->getMessage(), $ex->getTrace());
+}

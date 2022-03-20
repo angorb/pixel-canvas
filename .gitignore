@@ -1,5 +1,6 @@
 *.env
 NOTES
+app/log
 app/vendor
 app/public/workshop
 app/node_modules

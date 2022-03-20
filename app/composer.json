@@ -14,14 +14,17 @@
         }
     ],
     "require": {
-        "guzzlehttp/psr7": "^2.1",
-        "php-di/php-di": "^6.3",
         "twbs/bootstrap": "5.0.2",
         "components/jquery": "^3.6",
-        "monolog/monolog": "^2.4"
+        "monolog/monolog": "^2.4",
+        "league/route": "^5.1",
+        "laminas/laminas-diactoros": "^2.8",
+        "laminas/laminas-httphandlerrunner": "^2.1",
+        "php-console/php-console": "^3.1"
     },
     "scripts": {
         "post-update-cmd": [
+            "mkdir -p log && chmod 777 log",
             "rm -f public/css/bootstrap.min.css public/css/bootstrap.min.css.map public/scripts/bootstrap.min.js public/scripts/jquery.min.js public/scripts/bootstrap.min.js.map",
             "cp vendor/twbs/bootstrap/dist/css/bootstrap.min.* public/css/",
             "cp vendor/twbs/bootstrap/dist/js/bootstrap.min.* public/scripts/",
