@@ -23,7 +23,7 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "mkdir -p log && chmod 777 log",
+            "mkdir -p -m777 log data",
             "rm -f public/css/bootstrap.min.css public/css/bootstrap.min.css.map public/scripts/bootstrap.min.js public/scripts/jquery.min.js public/scripts/bootstrap.min.js.map",
             "cp vendor/twbs/bootstrap/dist/css/bootstrap.min.* public/css/",
             "cp vendor/twbs/bootstrap/dist/js/bootstrap.min.* public/scripts/",
