@@ -26,22 +26,35 @@ require_once __DIR__ . '/../config/bootstrap.php';
     <div class="container">
         <!-- Picker Table -->
         <div class="col-sm-8 offset-sm-2 my-3">
+            <input id='colorpicker'>
             <div class="grid">
                 <?php for ($i = 0; $i < 4096; $i++) : ?>
                     <div id='px<?= $i ?>' name='<?= $i ?>' class='cell'></div>
                 <?php endfor; ?>
             </div>
         </div>
-        <div class="col-sm-8 offset-sm-2 ml-2 my-2 align-right">
-            <form class="form-inline">
-                <input id='session-id' type='hidden' value='<?= session_id() ?>'>
-                <input id='colorpicker' class="form-control">
-                <button type="button" class="btn btn-danger" id="reset">Reset</button>
-                <input type="text" class="form-control d-inline col-sm-3" id="export-name" placeholder="My Pixel Art" lenth="10">
-                <button type="button" class="btn btn-success" id="save">Save</button>
-                <select id="saved-file-select"></select>
-                <button type="button" class="btn btn-warning" id="load">Load</button>
-
+        <div class="col-sm-8 offset-sm-2 ml-2 my-2">
+            <form class>
+                <div class="form-row">
+                    <div class="col-8">
+                        <input type="text" class="form-control d-inline col-sm-3" id="export-name" placeholder="My Pixel Art" lenth="10">
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-success" id="save">Save</button>
+                    </div>
+                </div>
+                <div class=" form-row">
+                    <div class="col-8">
+                        <select id="saved-file-select" class="form-select"></select>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-warning" id="load">Load</button>
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-danger" id="reset">Reset</button>
+                        <input id='session-id' type='hidden' value='<?= session_id() ?>'>
+                    </div>
+                </div>
             </form>
         </div>
         <?php if (DEBUG) {

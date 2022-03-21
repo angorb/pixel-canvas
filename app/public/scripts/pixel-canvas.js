@@ -55,4 +55,8 @@ $().ready(function () {
             $.fn.reloadFiles();
         });
     });
+
+    $('#load').click(function () {
+        // load the stored bkg
+    });
 });
