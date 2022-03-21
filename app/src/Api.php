@@ -1,16 +1,18 @@
 <?php
 
-
 namespace Angorb\PixelCanvas;
 
 use Psr\Http\Message\ServerRequestInterface;
 
 class Api
 {
-    public function test(ServerRequestInterface $request): array
+    public const CANVAS_WIDTH = 64;
+
+    public function status(ServerRequestInterface $request): array
     {
         return [
-            'hey' => 'gotcha'
+            'status' => 'OK',
+            'time' => \time()
         ];
     }
 
@@ -28,13 +30,36 @@ class Api
         }
 
         if (!empty($data['cells']) && \count($data['cells']) > 0) {
-            $cells = \json_encode($data['cells'], JSON_FORCE_OBJECT & JSON_PRETTY_PRINT);
+            foreach ($data['cells'] as $index => $rgba) {
+                // get color and x/y
+                $x = $index % self::CANVAS_WIDTH;
+                $y =  ($index - $x) / self::CANVAS_WIDTH;
+
+                $color = [];
+                \preg_match(
+                    '/rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*(\d?)\)/',
+                    $rgba,
+                    $color
+                );
+
+                $cells[$index] = [
+                    'x' => $x,
+                    'y' => $y,
+                    'r' => $color[1],
+                    'g' => $color[2],
+                    'b' => $color[3],
+                    'a' => $color[4] ?? 0,
+                ];
+            }
         }
 
         if (
             !\is_null($fileName)
             && !\is_null($cells)
-            && \file_put_contents(__DIR__ . '/../data/' . $fileName, $cells)
+            && \file_put_contents(
+                __DIR__ . '/../data/' . $fileName,
+                json_encode($cells, \JSON_FORCE_OBJECT)
+            )
         ) {
             $saved = \true;
         }
@@ -49,10 +74,22 @@ class Api
     // loads a matric from a file
     public function load(ServerRequestInterface $request): array
     {
+        return [];
     }
 
     // return a list of all saved
     public function listSaved(ServerRequestInterface $request): array
     {
+        $path = \realpath(__DIR__ . '/../data/');
+        $files = [];
+        if ($path) {
+            $found = glob($path . '/*.json');
+            \ksort($found);
+            foreach ($found as $file) {
+                $name = \basename($file);
+                $files[$name] = $file;
+            }
+        }
+        return $files;
     }
 }

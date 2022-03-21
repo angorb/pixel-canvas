@@ -18,7 +18,7 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
     $_FILES
 );
 
-$router = new League\Route\Router;
+$router = new League\Route\Router();
 $responseFactory = new Laminas\Diactoros\ResponseFactory();
 
 // map a route
@@ -30,28 +30,16 @@ $router->map('GET', '/', function (ServerRequestInterface $request): ResponseInt
 
 // JSON API
 $router->group('/api', function ($router) {
-
-    $router->map('POST', '/', function (ServerRequestInterface $request): array {
-        return [
-            'body' => $request->getParsedBody()
-        ];
-    });
-
-    $router->map('GET', '/test', function (ServerRequestInterface $request): array {
-        return [
-            'success' => true
-        ];
-    });
     $router->map('POST', '/save', 'Angorb\PixelCanvas\Api::save');
-    $router->map('GET', '/test2', 'Angorb\PixelCanvas\Api::test');
+    $router->map('GET', 'files', 'Angorb\PixelCanvas\Api::listSaved');
+    $router->map('GET', '/status', 'Angorb\PixelCanvas\Api::status');
 })->setStrategy(new League\Route\Strategy\JsonStrategy($responseFactory));
 
 
 try {
     $response = $router->dispatch($request);
-
     // send the response to the browser
-    (new Laminas\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);
+    (new Laminas\HttpHandlerRunner\Emitter\SapiEmitter())->emit($response);
 } catch (Exception $ex) {
     $logger->critical($ex->getMessage(), $ex->getTrace());
 }

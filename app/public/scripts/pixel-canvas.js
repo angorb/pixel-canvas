@@ -6,6 +6,20 @@ $("#colorpicker").spectrum({
     localStorageKey: "pixel-color." + $('#session-id').val(),
 });
 
+// set up the saved files
+$.fn.reloadFiles = function () {
+    $('#saved-file-select').children().remove();
+    $.getJSON('/api/files', function (data) {
+        $.each(data, function (name, path) {
+            $('#saved-file-select').append($('<option>', {
+                value: path,
+                text: name
+            }));
+        });
+    });
+}
+$.fn.reloadFiles();
+
 $().ready(function () {
     var colorPicker = $('#colorpicker');
 
@@ -27,7 +41,7 @@ $().ready(function () {
     });
 
     // dump the cell colors somewhere
-    $('#export').click(function () {
+    $('#save').click(function () {
         var cellColors = {};
         $('.cell').each(function () {
             cellColors[$(this).attr('name')] = $(this).css('background-color');
@@ -38,6 +52,7 @@ $().ready(function () {
         };
         $.post('/api/save', data, function (response) {
             console.log(response);
+            $.fn.reloadFiles();
         });
     });
 });

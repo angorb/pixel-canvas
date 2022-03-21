@@ -34,18 +34,19 @@ require_once __DIR__ . '/../config/bootstrap.php';
         </div>
         <div class="col-sm-8 offset-sm-2 ml-2 my-2 align-right">
             <form class="form-inline">
-                <input id='colorpicker' class="form-control">
                 <input id='session-id' type='hidden' value='<?= session_id() ?>'>
-                <div class="col-auto">
-                    <label class="sr-only" for="export-name">Name</label>
-                    <input type="text" class="form-control mb-2" id="export-name" placeholder="My Pixel Art">
-                </div>
-                <button type="button" class="btn btn-success" id="save">Save</button>
-                <button type="button" class="btn btn-info" id="export">Export</button>
+                <input id='colorpicker' class="form-control">
                 <button type="button" class="btn btn-danger" id="reset">Reset</button>
+                <input type="text" class="form-control d-inline col-sm-3" id="export-name" placeholder="My Pixel Art" lenth="10">
+                <button type="button" class="btn btn-success" id="save">Save</button>
+                <select id="saved-file-select"></select>
+                <button type="button" class="btn btn-warning" id="load">Load</button>
+
             </form>
         </div>
-        <?php if (DEBUG) include __DIR__ . '/../templates/debug-controls.php'; ?>
+        <?php if (DEBUG) {
+            include __DIR__ . '/../templates/debug-controls.php';
+        } ?>
     </div>
 
     <!-- JavaScript -->
