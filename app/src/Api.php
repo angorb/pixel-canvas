@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Angorb\PixelCanvas;
 
 use Psr\Http\Message\ServerRequestInterface;
