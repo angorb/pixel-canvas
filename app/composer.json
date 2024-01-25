@@ -20,7 +20,8 @@
         "league/route": "^5.1",
         "laminas/laminas-diactoros": "^2.8",
         "laminas/laminas-httphandlerrunner": "^2.1",
-        "php-console/php-console": "^3.1"
+        "php-console/php-console": "^3.1",
+        "spatie/ray": "^1.41"
     },
     "scripts": {
         "post-update-cmd": [

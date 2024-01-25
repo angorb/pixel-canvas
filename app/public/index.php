@@ -32,6 +32,37 @@ $router->map('GET', '/', function (ServerRequestInterface $request): ResponseInt
 $router->group('/api', function ($router) {
 
     $router->map('POST', '/', function (ServerRequestInterface $request): array {
+        ray($request->getParsedBody()); // DEBUG
+
+        // check if data is valid
+        $data = $request->getParsedBody();
+        if (!is_array($data)) {
+            throw new UnexpectedValueException('Invalid image data. Expected array, got ' . gettype($data));
+        }
+
+        if (empty($data['cells']) || count($data['cells']) !== 4096) { // TODO expand for more canvas sizes
+            throw new UnexpectedValueException('Invalid length of image data: ' . empty($data['cells'] ? '0' : count($data['cells'])));
+        }
+
+        // start parsing the color data from the canvas
+        foreach ($data['cells'] as $position => $cell) {
+            // pattern for rgb and rgba: rgba?\((\d{1,3}), (\d{1,3}), (\d{1,3}),?\s?(\d{1,3})\)
+            $colorMatches  = [];
+            preg_match_all(
+                '/rgba?\((\d{1,3}), (\d{1,3}), (\d{1,3}),?\s?(\d{1,3})?\)/',
+                $cell,
+                $colorMatches
+            );
+
+            // parse the position to x,y
+            $posY = floor(($position) / 64);
+            $posX = ($position) % 64;
+
+            // DEBUG
+            ray($posX . ',' . $posY, $colorMatches);
+            if ($position > 65) break;
+        }
+
         return [
             'body' => $request->getParsedBody()
         ];
