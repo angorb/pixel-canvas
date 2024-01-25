@@ -81,20 +81,31 @@ $router->group('/api', function ($router) {
         // create a new image
         $image = imagecreatetruecolor(64, 64);
         ray('GD image created'); // DEBUG
+        $colorsList = [];
         foreach ($imageData as $pixel) {
+
+            $colorString = (int)$pixel['color']['r'] . ':' .
+                (int)$pixel['color']['g'] . ':' .
+                (int)$pixel['color']['g'];
+
+            if (!in_array($colorString, $colorsList)) {
+                ray('Found a new color - ' . $colorString);
+                $colorsList[] = $colorString;
+            }
+
             $color = imagecolorallocate(
                 $image,
                 (int)$pixel['color']['r'],
                 (int)$pixel['color']['g'],
-                (int)$pixel['color']['g'],
+                (int)$pixel['color']['b'],
             );
             imagesetpixel($image, $pixel['coordinates']['x'], $pixel['coordinates']['y'], $color);
         }
 
-        ray('image data set'); // DEBUG
+        ray('image data set: ' . count($colorsList) . ' colors found', $colorsList); // DEBUG
 
-        $outputFile = __DIR__ . '/../export/' . $imageName . '.jpg';
-        imagejpeg($image, $outputFile, 100);
+        $outputFile = __DIR__ . '/../export/' . $imageName . '.gif';
+        imagegif($image, $outputFile);
         imagedestroy($image);
 
         ray($outputFile); // DEBUG
