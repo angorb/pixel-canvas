@@ -44,24 +44,60 @@ $router->group('/api', function ($router) {
             throw new UnexpectedValueException('Invalid length of image data: ' . empty($data['cells'] ? '0' : count($data['cells'])));
         }
 
+        // set the image name from the 'Name' field
+        $imageName = empty($data['name']) ? time() : $data['name'];
+
         // start parsing the color data from the canvas
+        $imageData = [];
         foreach ($data['cells'] as $position => $cell) {
             // pattern for rgb and rgba: rgba?\((\d{1,3}), (\d{1,3}), (\d{1,3}),?\s?(\d{1,3})\)
             $colorMatches  = [];
             preg_match_all(
                 '/rgba?\((\d{1,3}), (\d{1,3}), (\d{1,3}),?\s?(\d{1,3})?\)/',
                 $cell,
-                $colorMatches
+                $colorMatches,
+                PREG_PATTERN_ORDER
             );
 
             // parse the position to x,y
-            $posY = floor(($position) / 64);
+            $posY = (int)floor(($position) / 64);
             $posX = ($position) % 64;
 
-            // DEBUG
-            ray($posX . ',' . $posY, $colorMatches);
-            if ($position > 65) break;
+            $imageData[$position] = [
+                'coordinates' => [
+                    'x' => $posX,
+                    'y' => $posY,
+                ],
+                'color' => [
+                    'r' => $colorMatches[1][0], // TODO
+                    'g' => $colorMatches[2][0],
+                    'b' => $colorMatches[3][0],
+                ],
+            ];
         }
+
+        ray($imageData);
+
+        // create a new image
+        $image = imagecreatetruecolor(64, 64);
+        ray('GD image created'); // DEBUG
+        foreach ($imageData as $pixel) {
+            $color = imagecolorallocate(
+                $image,
+                (int)$pixel['color']['r'],
+                (int)$pixel['color']['g'],
+                (int)$pixel['color']['g'],
+            );
+            imagesetpixel($image, $pixel['coordinates']['x'], $pixel['coordinates']['y'], $color);
+        }
+
+        ray('image data set'); // DEBUG
+
+        $outputFile = __DIR__ . '/../export/' . $imageName . '.jpg';
+        imagejpeg($image, $outputFile, 100);
+        imagedestroy($image);
+
+        ray($outputFile); // DEBUG
 
         return [
             'body' => $request->getParsedBody()
